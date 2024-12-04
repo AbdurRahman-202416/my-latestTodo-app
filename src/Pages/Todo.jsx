@@ -8,6 +8,7 @@ import add from "../assets/img/plus.png"
 import { notifyError, notifySuccess } from '../Component/Toaster';
 const Todo = () => {
     const [categories, setCategories] = useState([]);
+    const [loader, setLoader] = useState(false);
     const getCategories = async () => {
         try {
             const response = await apiRequest.get('/categories');
@@ -28,9 +29,13 @@ const Todo = () => {
 
     const getTask = async () => {
         let taskId = Number(id);
+        setLoader(true)
         try {
             const response = await apiRequest.get(`/tasks/category/${taskId}`);
             const data = response.data;
+            if (response) {
+                setLoader(false);
+            }
             setSingleTask(() => {
                 let newarr = data.sort((a, b) => Number(a.id) - Number(b.id));
                 return newarr;
@@ -39,6 +44,7 @@ const Todo = () => {
 
         } catch (err) {
             console.log(err)
+            setLoader(false)
         }
     }
     useEffect(() => {
@@ -174,14 +180,20 @@ const Todo = () => {
     return (
 
         <div div className='font-serif' >
-
+            <div className="relative">
+                {loader && (
+                    <div className="fixed inset-0 flex items-center justify-center  z-50">
+                        <img className="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/199956/loading-loader.svg" alt="Loading icon" />
+                    </div>
+                )}
+            </div>
 
             <div className='mx-auto bg-gray-900 h-[400vh]  ' >
                 <div className=' bg-black  mx-auto h-[200px] w-[100%] rounded-md'>
                     <h1 className='text-center flex justify-center items-center font-bold text-[30px] sm:text-6xl  py-[40px] text-indigo-500'>
                         <img src={roket} className='w-8  h-10 sm:h-14 m-2 cursor-pointer' alt="" />
                         {
-                            categories.filter((item) => item.id === Number(id)).map((item)=>{
+                            categories.filter((item) => item.id === Number(id)).map((item) => {
                                 return (
                                     <span>{item.name}</span>
                                 )
@@ -263,17 +275,17 @@ const Todo = () => {
 
                                         <button
                                             onClick={() => EditTask(item.id, item)}
-                                            className="delete-btn block sm:hidden group-hover:block w-10 sm:w-20 h-7 sm:h-12 flex items-center justify-center text-gray-400 hover:text-red-500"
+                                            className="delete-btn block sm:hidden group-hover:block w-10 sm:w-12 rounded-md mx-2 h-7 sm:h-12 flex items-center justify-center text-gray-400 hover:bg-[#D3F1DF] "
                                         >
                                             <img
                                                 src={Edit}
-                                                className=" sm:w-15 w-8 mx-1 rounded-full h-7 sm:h-10"
+                                                className=" sm:w-15 w-8 mx-auto rounded-full h-7 sm:h-10"
                                                 alt="Delete"
                                             />
                                         </button>
                                         <button
                                             onClick={() => handleOpenModal(item.id)}
-                                            className="delete-btn h-7 sm:w-15 w-[10] sm:h-10 flex items-center justify-center text-gray-400 "
+                                            className="delete-btn h-7 sm:w-15 w-[10] sm:h-10 hover:bg-[#D3F1DF] rounded-md flex items-center justify-center text-gray-400 "
                                         >
                                             <img
                                                 src={deleteImg}
