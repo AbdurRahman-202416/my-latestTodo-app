@@ -8,7 +8,7 @@ let custom = {
 const notify = (pram) =>
   toast(` ${pram}`, {
     position: "bottom-right",
-    autoClose: 5000,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -20,7 +20,7 @@ const notify = (pram) =>
 const notifySuccess = (message) =>
   toast.success(`${message}`, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -34,7 +34,7 @@ const icon = "❌ ✅";
 const notifyError = (message) =>
   toast.error(`${message}`, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,

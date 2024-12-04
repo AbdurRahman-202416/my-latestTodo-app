@@ -95,9 +95,14 @@ const HomePage = () => {
     const [isEdit, setIsEdit] = useState(false);
     const [editTaskId, setEditTask] = useState();
     const EditCategories = async (id, item) => {
-        setNewCategories(item.name)
-        setIsEdit(true)
-        setEditTask(Number(id))
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        setNewCategories(item.name);
+        setIsEdit(true);
+        setEditTask(Number(id));
     }
     //Save Edit Categories
     const saveEditedCategories = async () => {
@@ -155,8 +160,18 @@ const HomePage = () => {
                         <img src={roket} className='w-8 h-10 sm:h-14 m-2 cursor-pointer' alt="" />
                         Task Categories List </h1>
                     <div className='flex justify-center gap-2 items-center mx-auto py-9 sm:py-[18px] px-[5%] w-[95%] sm:w-[80%]'>
-                        <input type="text" onChange={(e) => setNewCategories(e.target.value)} value={newCategories}
-                            placeholder='Adicione uma nova tarefa' className='bg-gray-700 w-full h-[40px] sm:h-[54px] shadow-md shadow-gray-600 px-4 rounded-lg outline-none ring-2
+                        <input type="text" onKeyDown={(e) => {
+                            console.log(e)
+                            if (e.code === 'Enter' && isEdit == true) {
+                                saveEditedCategories();
+                            } else {
+                                if (e.code === 'Enter') {
+                                    addCategories()
+                                }
+                            }
+                        }
+                        } onChange={(e) => setNewCategories(e.target.value)} value={newCategories}
+                            placeholder='Add a new Categories' className='bg-gray-700 w-full h-[40px] sm:h-[54px] shadow-md shadow-gray-600 px-4 rounded-lg outline-none ring-2
                      active:ring-indigo-500  text-white  text-[16px]' />
                         {isEdit ? <button onClick={saveEditedCategories} className='flex gap-2 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Save<img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
                         </button> : <button onClick={addCategories} className='flex gap-2  rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Create<img src={add} className='w-4 h-4  mt-1 ' alt="" /></button>
@@ -169,7 +184,7 @@ const HomePage = () => {
                         categories.map((item) => {
                             return (
 
-                                <div key={Math.random()} className="h-auto group text-sm  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-8 my-16 flex">
+                                <div key={Math.random()} className="h-auto group text-[8px]  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-10 my-16 flex">
                                     <div className="justify-around items-center mx-0 sm:mx-6 gap-2 flex">
                                         {/* <span className='text-white'>{item.id}</span> */}
                                         <Link to={`/todo/${item.id}`}>
@@ -178,18 +193,18 @@ const HomePage = () => {
                                         </Link>
 
 
-                                        <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
+                                        <div className="px-1 sm:px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-1 inline-flex">
                                             <div className="text-[#d9d9d9] ">{item.tasks.length}</div>
                                         </div>
 
                                         <button onClick={() => EditCategories(item.id, item)} className=' block sm:hidden hover:bg-[#D3F1DF]  rounded-md p-1 group-hover:block'>
-                                            <img className='sm:w-8 w-6 rounded-lg h-6 sm:h-8' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFQy1rfuoxR2GAhqSLp_r6xJV0iThbxuld11W0WCeR6Ndz6dXYGNcVz7A&s" alt="" />
+                                            <img className='sm:w-8 w-4 rounded-lg h-4 sm:h-8' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFQy1rfuoxR2GAhqSLp_r6xJV0iThbxuld11W0WCeR6Ndz6dXYGNcVz7A&s" alt="" />
                                         </button>
                                         <button onClick={() => handleOpenModal(item.id)} className='block sm:hidden  hover:bg-[#D3F1DF] p-1 rounded-lg group-hover:block'>
-                                            <img className=' w-5 sm:w-8 rounded-lg h-5 sm:h-8 ' src={deleteImg} alt="" />
+                                            <img className=' w-4 sm:w-8 rounded-lg h-4 sm:h-8 ' src={deleteImg} alt="" />
                                         </button>
                                     </div>
-                                    <div className="justify-start text-sm sm:text-2xl items-center gap-2 flex">
+                                    <div className="justify-start text-[8px] sm:text-2xl items-center gap-1 flex">
                                         <div className="text-[#8284fa] "> Completed</div>
                                         <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
                                             <div className="text-[#d9d9d9]">
@@ -230,15 +245,9 @@ const HomePage = () => {
                         </div>
                     )
                 }
-
-
-
             </div>
 
         </div>
-
-
-
     )
 }
 

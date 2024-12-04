@@ -14,18 +14,21 @@ function App() {
     { path: '*', element: <h1>404 No page found</h1> },
   ]);
 
-
-
-
   apiRequest.interceptors.request.use((req) => {
     setLoader(true)
     return req;
   })
-  apiRequest.interceptors.response.use((res) => {
-    setLoader(false)
-    return res;
-  })
 
+  apiRequest.interceptors.response.use(
+    (res) => {
+      setLoader(false);
+      return res;
+    },
+    (error) => {
+      setLoader(false);
+      return Promise.reject(error);
+    }
+  );
   return (
     <>
       <div className="relative">

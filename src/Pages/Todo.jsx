@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import apiRequest from '../Axios';
 import { data, useParams } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import deleteImg from "../assets/img/delete.png"
 import roket from "../assets/img/rocket.png"
 import Edit from "../assets/img/edit.png"
@@ -101,6 +102,10 @@ const Todo = () => {
     const [isEdit, setIsEdit] = useState(false);
     const [editTaskId, setEditTaskId] = useState()
     const EditTask = async (id, item) => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
         setIsEdit(true);
         setCategoriesName(item.name)
         setEditTaskId(Number(id))
@@ -164,10 +169,13 @@ const Todo = () => {
 
         <div div className='font-serif' >
 
-            <div className='mx-auto bg-gray-900 h-[400vh]  ' >
+            <div className='mx-auto bg-gray-900 h-[200vh]  ' >
                 <div className=' bg-black  mx-auto h-[200px] w-[100%] rounded-md'>
                     <h1 className='text-center flex justify-center items-center font-bold text-[30px] sm:text-6xl  py-[40px] text-indigo-500'>
-                        <img src={roket} className='w-8  h-10 sm:h-14 m-2 cursor-pointer' alt="" />
+                        <Link to="/">
+                            <img src={roket} className='w-8  h-10 sm:h-14 m-2 cursor-pointer' alt="" />
+                        </Link>
+
                         {
                             categories.filter((item) => item.id === Number(id)).map((item) => {
                                 return (
@@ -177,15 +185,32 @@ const Todo = () => {
 
                         } </h1>
                     <div className='flex justify-center gap-2 items-center mx-auto py-9 sm:py-[18px] px-[5%] w-[90%] sm:w-[80%]'>
-                        <input type="text" value={categoriesName}
-                            onChange={(e) => setCategoriesName(e.target.value)} placeholder='Adicione uma nova tarefa' className='bg-gray-700 w-full h-[40px] sm:h-[54px] px-4 rounded-lg outline-none ring-2 active:ring-indigo-500  text-white  text-[16px]' />
+                        <input
+                            type="text"
+                            value={categoriesName}
+                            onChange={(e) => setCategoriesName(e.target.value)}
+                            onKeyDown={(e) => {
+                                console.log(e)
+                                if (e.code === 'Enter' && isEdit == true) {
+                                    saveTask();
+
+                                } else {
+                                    if (e.code === 'Enter') {
+                                        AddNewTask()
+                                    }
+                                }
+                            }
+                            }
+                            placeholder='Add New Task'
+                            className='bg-gray-700 w-full h-[40px] sm:h-[54px] px-4 rounded-lg outline-none ring-2 active:ring-indigo-500 text-white text-[16px]'
+                        />
                         {
                             isEdit ?
-                                <button onClick={saveTask} className='flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
+                                <button onClick={saveTask} onKeyDown={(e) => e.code == "Enter" && saveTask()} className='flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
                                     Save <img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
                                 </button>
                                 :
-                                <button onClick={AddNewTask} className=' text-sm sm:text-[20px] flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
+                                <button onClick={AddNewTask} onKeyDown={(e) => e.code == "Enter" && AddNewTask()} className=' text-sm sm:text-[20px] flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
                                     Create <img src={add} className='w-4 h-4 pr-1 mt-1 ' alt="" />
                                 </button>
                         }
@@ -218,8 +243,6 @@ const Todo = () => {
                                     </div>))}
                     </div>
                 </div>
-
-
 
                 <div className='mx-auto'>
                     {
