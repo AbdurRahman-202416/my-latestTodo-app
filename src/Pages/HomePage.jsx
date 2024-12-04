@@ -8,6 +8,7 @@ import deleteImg from "../assets/img/delete.png"
 import roket from "../assets/img/rocket.png"
 import Edit from "../assets/img/edit.png"
 import add from "../assets/img/plus.png"
+import done from "../assets/img/tick.png"
 // import done from "../assets/img/check-mark.png"
 import { loaderContext } from '../App';
 
@@ -150,10 +151,10 @@ const HomePage = () => {
             </div>
         )
     }
-
+  
     return (
         <div>
-            <div className='mx-auto z-[1000] font-serif h-[200vh]  ' >
+            <div className='mx-auto z-[1000] font-serif bg-gray-800 h-[200vh]  ' >
                 <div className=' bg-black  mx-auto h-[200px] w-[100%] rounded-md'>
                     <h1 className='text-center flex font-bold justify-center items-center text-[25px] sm:text-6xl md:text-6xl lg:text-6xl  py-[40px] text-indigo-500'>
                         <img src={roket} className='w-8 h-10 sm:h-14 m-2 cursor-pointer' alt="" />
@@ -184,7 +185,7 @@ const HomePage = () => {
                         categories.map((item) => {
                             return (
 
-                                <div key={Math.random()} className="h-auto group text-[18px]  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-10 my-16 flex">
+                                <div key={Math.random()} className="h-auto group text-[18px]  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-2 sm:mx-20 px-4 items-center my-16 flex">
                                     <div className="justify-around rounded-md items-center mx-0 sm:mx-6 gap-2 flex">
                                         {/* <span className='text-white'>{item.id}</span> */}
                                         <Link to={`/todo/${item.id}`}>
@@ -197,15 +198,15 @@ const HomePage = () => {
                                         </div>
 
                                         <button onClick={() => EditCategories(item.id, item)} className=' block sm:hidden hover:bg-[#D3F1DF]  rounded-md p-1 group-hover:block'>
-                                            <img className='sm:w-8 w-6 rounded-lg h-6 sm:h-8' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFQy1rfuoxR2GAhqSLp_r6xJV0iThbxuld11W0WCeR6Ndz6dXYGNcVz7A&s" alt="" />
+                                            <img className='sm:w-12 w-8 rounded-lg h-8 sm:h-12' src={Edit} alt="" />
                                         </button>
                                         <button onClick={() => handleOpenModal(item.id)} className='block sm:hidden  hover:bg-[#D3F1DF] p-1 rounded-lg group-hover:block'>
-                                            <img className=' w-5 sm:w-8 rounded-lg h-6 sm:h-8 ' src={deleteImg} alt="" />
+                                            <img className=' w-5 sm:w-12 rounded-lg h-6 sm:h-10 ' src={deleteImg} alt="" />
                                         </button>
                                     </div>
                                     <div className="justify-start text-[18px] sm:text-3xl items-center gap-1 flex">
                                         <div className="text-[#8284fa] hidden sm:block "> Completed</div>
-                                        <img className='block sm:hidden w-8 h-8 rounded-xl' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnLhDLC7G_yZQ8llsEbgFyxILOOVFXMgbMJxZf_k3py9EHgMs_2mZB3AOvU_1H_2s4qBc&usqp=CAU" alt="" />
+                                        <img className='block sm:hidden w-8 h-8 rounded-xl' src={done} alt="" />
                                         <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
                                             <div className="text-[#d9d9d9]">
                                                 {item.tasks.filter(task => task.isCompleted).length}
