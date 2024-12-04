@@ -48,7 +48,7 @@ const HomePage = () => {
     //categories Add
     const addCategories = async () => {
         if (newCategories.length == 0) {
-            notifyError("Please add categories name first");
+            notifyError("Please input Categories name first");
         }
         let data = {
             name: newCategories,
@@ -152,9 +152,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <div className='mx-auto z-[1000] font-serif bg-gray-800 h-[400vh]  ' >
-
-
+            <div className='mx-auto z-[1000] font-serif bg-gray-800 h-[200vh]  ' >
                 <div className=' bg-black  mx-auto h-[200px] w-[100%] rounded-md'>
                     <h1 className='text-center flex font-bold justify-center items-center text-[25px] sm:text-6xl md:text-6xl lg:text-6xl  py-[40px] text-indigo-500'>
                         <img src={roket} className='w-8 h-10 sm:h-14 m-2 cursor-pointer' alt="" />
@@ -179,19 +177,19 @@ const HomePage = () => {
                     </div>
                 </div>
 
+
                 <div className='mx-auto'>
                     {
                         categories.map((item) => {
                             return (
 
-                                <div key={Math.random()} className="h-auto group text-[8px]  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-10 my-16 flex">
+                                <div key={Math.random()} className="h-auto group text-[18px]  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-10 my-16 flex">
                                     <div className="justify-around items-center mx-0 sm:mx-6 gap-2 flex">
                                         {/* <span className='text-white'>{item.id}</span> */}
                                         <Link to={`/todo/${item.id}`}>
 
                                             <div className="text-[#4ea8de]">{item.name}</div>
                                         </Link>
-
 
                                         <div className="px-1 sm:px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-1 inline-flex">
                                             <div className="text-[#d9d9d9] ">{item.tasks.length}</div>
@@ -204,7 +202,7 @@ const HomePage = () => {
                                             <img className=' w-4 sm:w-8 rounded-lg h-4 sm:h-8 ' src={deleteImg} alt="" />
                                         </button>
                                     </div>
-                                    <div className="justify-start text-[8px] sm:text-2xl items-center gap-1 flex">
+                                    <div className="justify-start text-[18px] sm:text-2xl items-center gap-1 flex">
                                         <div className="text-[#8284fa] "> Completed</div>
                                         <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
                                             <div className="text-[#d9d9d9]">

@@ -34,7 +34,7 @@ function App() {
       <div className="relative">
         {loader && (
           <div className="fixed inset-0 flex items-center justify-center  z-50">
-            <img className="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/199956/loading-loader.svg" alt="Loading icon" />
+            <img className="w-12 h-12 sm:w-20 sm:h-20 animate-spin" src="https://www.svgrepo.com/show/199956/loading-loader.svg" alt="Loading icon" />
           </div>
         )}
       </div>
