@@ -169,7 +169,7 @@ const Todo = () => {
 
         <div div className='font-serif' >
 
-            <div className='mx-auto bg-gray-900 h-[200vh]  ' >
+            <div className='mx-auto bg-gray-900 h-auto  ' >
                 <div className=' bg-black  mx-auto h-[200px] w-[100%] rounded-md'>
                     <h1 className='text-center flex justify-center items-center font-bold text-[30px] sm:text-6xl  py-[40px] text-indigo-500'>
                         <Link to="/">
