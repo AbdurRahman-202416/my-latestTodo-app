@@ -8,20 +8,22 @@ import deleteImg from "../assets/img/delete.png"
 import roket from "../assets/img/rocket.png"
 import Edit from "../assets/img/edit.png"
 import add from "../assets/img/plus.png"
+import { loaderContext } from '../App';
 
 
 
 
 const HomePage = () => {
-
-
+    const loaderCtx = useContext(loaderContext);
     const [categories, setCategories] = useState();
     // const [task, setTask] = useState(" ");
     const [newCategories, setNewCategories] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
-    const [loader, setLoader] = useState(false);
-    const getData = async () => {
-        setLoader(true);
+    // const [loader, setLoader] = useState(false);
+
+    //Get All categories
+    const getCategories = async () => {
+
         try {
             const response = await apiRequest.get("/categories");
             const data = response.data;
@@ -30,17 +32,20 @@ const HomePage = () => {
                 return newarr;
             });
             if (response) {
-                setLoader(false)
             }
             console.log(data);
         } catch (error) {
             console.log(error)
-            setLoader(false);
+
         }
     }
+
     useEffect(() => {
-        getData();
+        getCategories();
     }, []);
+
+
+    //categories Add
     const addCategories = async () => {
         if (newCategories.length == 0) {
             notifyError("Please add categories name first");
@@ -50,11 +55,10 @@ const HomePage = () => {
         }
         try {
             const response = await apiRequest.post("/categories", data);
-            console.log(response)
             if (response.status == 201) {
                 notifySuccess("New Categories added to your list!");
                 setNewCategories("");
-                getData();
+                getCategories();
             }
 
         } catch (error) {
@@ -64,19 +68,21 @@ const HomePage = () => {
 
     }
     const [deleteId, setDeleteId] = useState({});
+    // Deleted Modal show
     const handleOpenModal = (id, item) => {
         modalOpen ? setModalOpen(false) : setModalOpen(true);
         setDeleteId(id);
     }
 
-    const deleteCategories = async () => {
+    //Delete Categories
+    const DeleteCategories = async () => {
         setModalOpen(false)
         try {
             const response = await apiRequest.delete(`/categories/${deleteId}`);
             notifyError("Categories removed from your categories list .!")
             console.log(response)
             if (response.status == 200) {
-                getData();
+                getCategories();
 
             }
         }
@@ -85,26 +91,27 @@ const HomePage = () => {
             notifyError("Failed to delete the task. Please try again.");
         }
     }
+    //Edit Categories
     const [isEdit, setIsEdit] = useState(false);
-    const [editTaskId, setEdittask] = useState();
-    const editCategories = async (id, item) => {
+    const [editTaskId, setEditTask] = useState();
+    const EditCategories = async (id, item) => {
         setNewCategories(item.name)
         setIsEdit(true)
-        setEdittask(Number(id))
+        setEditTask(Number(id))
     }
-    const saveEdit = async () => {
+    //Save Edit Categories
+    const saveEditedCategories = async () => {
         let data = {
             name: newCategories,
         }
         if (newCategories.length == 0) {
-            setEdittask(false);
+            setEditTask(false);
             return;
         }
-
         try {
             const response = await apiRequest.patch(`/categories/${editTaskId}`, data);
-            console.log(response);
-            getData()
+
+            getCategories()
             if (response.status == 200) {
                 setIsEdit(false)
                 setNewCategories('')
@@ -116,9 +123,11 @@ const HomePage = () => {
         }
 
     }
+
+
     if (!categories) {
         return (
-            <div class=' shadow-lg rounded-md p-4 h-[100vh]  w-[90%] mx-auto'>
+            <div class=' shadow-lg rounded-md p-4 h-[200vh]  w-[90%] mx-auto'>
                 <div class='animate-pulse my-[20%] w-[60%] mx-auto  rounded-md  shadow-lg shadow-indigo-300 flex space-x-4'>
                     <div class='rounded-full bg-slate-200 h-10 w-10'></div>
                     <div class='flex-1  space-y-6 py-1'>
@@ -139,24 +148,17 @@ const HomePage = () => {
     return (
         <div>
             <div className='mx-auto z-[1000] font-serif bg-gray-800 h-[400vh]  ' >
-                <div className="relative">
-                    {loader && (
-                        <div className="fixed inset-0 flex items-center justify-center  z-50">
-                            <img className="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/199956/loading-loader.svg" alt="Loading icon" />
-                        </div>
-                    )}
-                </div>
 
 
                 <div className=' bg-black  mx-auto h-[200px] w-[100%] rounded-md'>
                     <h1 className='text-center flex font-bold justify-center items-center text-[25px] sm:text-6xl md:text-6xl lg:text-6xl  py-[40px] text-indigo-500'>
-                        <img src="src\assets\img\rocket.png" className='w-8 h-10 sm:h-14 m-2 cursor-pointer' alt="" />
+                        <img src={roket} className='w-8 h-10 sm:h-14 m-2 cursor-pointer' alt="" />
                         Task Categories List </h1>
                     <div className='flex justify-center gap-2 items-center mx-auto py-9 sm:py-[18px] px-[5%] w-[95%] sm:w-[80%]'>
                         <input type="text" onChange={(e) => setNewCategories(e.target.value)} value={newCategories}
                             placeholder='Adicione uma nova tarefa' className='bg-gray-700 w-full h-[40px] sm:h-[54px] shadow-md shadow-gray-600 px-4 rounded-lg outline-none ring-2
                      active:ring-indigo-500  text-white  text-[16px]' />
-                        {isEdit ? <button onClick={saveEdit} className='flex gap-2 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Save<img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
+                        {isEdit ? <button onClick={saveEditedCategories} className='flex gap-2 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Save<img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
                         </button> : <button onClick={addCategories} className='flex gap-2  rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Create<img src={add} className='w-4 h-4  mt-1 ' alt="" /></button>
                         }
                     </div>
@@ -180,7 +182,7 @@ const HomePage = () => {
                                             <div className="text-[#d9d9d9] ">{item.tasks.length}</div>
                                         </div>
 
-                                        <button onClick={() => editCategories(item.id, item)} className=' block sm:hidden hover:bg-[#D3F1DF]  rounded-md p-1 group-hover:block'>
+                                        <button onClick={() => EditCategories(item.id, item)} className=' block sm:hidden hover:bg-[#D3F1DF]  rounded-md p-1 group-hover:block'>
                                             <img className='sm:w-8 w-6 rounded-lg h-6 sm:h-8' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFQy1rfuoxR2GAhqSLp_r6xJV0iThbxuld11W0WCeR6Ndz6dXYGNcVz7A&s" alt="" />
                                         </button>
                                         <button onClick={() => handleOpenModal(item.id)} className='block sm:hidden  hover:bg-[#D3F1DF] p-1 rounded-lg group-hover:block'>
@@ -219,7 +221,7 @@ const HomePage = () => {
                                 </div>
 
                                 <div class="flex flex-col space-y-2">
-                                    <button onClick={deleteCategories} type="button"
+                                    <button onClick={DeleteCategories} type="button"
                                         class="px-4 py-2 rounded-lg text-white text-sm tracking-wide bg-red-500 hover:bg-red-600 active:bg-red-500">Delete</button>
                                     <button onClick={handleOpenModal} type="button"
                                         class="px-4 py-2 rounded-lg text-gray-50 text-sm tracking-wide bg-gray-500 hover:bg-indigo-800 active:bg-gray-200">Cancel</button>

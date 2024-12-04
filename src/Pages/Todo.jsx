@@ -7,51 +7,51 @@ import Edit from "../assets/img/edit.png"
 import add from "../assets/img/plus.png"
 import { notifyError, notifySuccess } from '../Component/Toaster';
 const Todo = () => {
+
+    //useState Hook
     const [categories, setCategories] = useState([]);
     const [loader, setLoader] = useState(false);
-    const getCategories = async () => {
+
+
+    //Get All categories
+    const GetCategories = async () => {
         try {
             const response = await apiRequest.get('/categories');
             const data = response.data;
             setCategories(data);
         } catch (error) {
             console.log(error)
-
         }
-
     }
-
+    //Get Id from URL
     const { id } = useParams();
-    console.log(id)
-
     const [singleTask, setSingleTask] = useState([]);
     const [categoriesName, setCategoriesName] = useState("");
 
-    const getTask = async () => {
+    // Get All Task Under The Categories Id
+    const getAllTask = async () => {
         let taskId = Number(id);
-        setLoader(true)
         try {
             const response = await apiRequest.get(`/tasks/category/${taskId}`);
             const data = response.data;
             if (response) {
-                setLoader(false);
             }
             setSingleTask(() => {
                 let newarr = data.sort((a, b) => Number(a.id) - Number(b.id));
                 return newarr;
             });
-            console.log(response.data);
-
         } catch (err) {
             console.log(err)
             setLoader(false)
         }
     }
+
     useEffect(() => {
-        getTask();
+        getAllTask();
     }, [])
 
-    const addTask = async () => {
+    // Add New Task Under The Categories Id
+    const AddNewTask = async () => {
         const categoriesId = Number(id);
         const data = {
             name: categoriesName,
@@ -59,7 +59,7 @@ const Todo = () => {
         }
         try {
             const response = await apiRequest.post(`/tasks`, data)
-            getTask();
+            getAllTask();
             if (response.status == 201) {
                 setCategoriesName("")
                 notifySuccess("Task added successfully! Start getting things done.");
@@ -71,7 +71,7 @@ const Todo = () => {
 
     }
 
-
+    //Delete Modal Handle
     const [modalOpen, setModalOpen] = useState(false);
     const [deleteId, setDeleteId] = useState({});
     const handleOpenModal = (id, item) => {
@@ -80,13 +80,14 @@ const Todo = () => {
     }
 
 
-    //delete
-    const deteltetask = async () => {
+
+    //Delete Task Using Individual Task ID
+    const DeleteTask = async () => {
         const itemID = Number(deleteId);
         setModalOpen(false);
         try {
             const response = await apiRequest.delete(`/tasks/${itemID}`);
-            getTask();
+            getAllTask();
             if (response.status == 200) {
                 notifySuccess("Task removed from your list.");
             }
@@ -96,8 +97,7 @@ const Todo = () => {
         }
     }
 
-
-
+    //Edit Task Using Individual Task ID
     const [isEdit, setIsEdit] = useState(false);
     const [editTaskId, setEditTaskId] = useState()
     const EditTask = async (id, item) => {
@@ -107,14 +107,14 @@ const Todo = () => {
 
     }
 
-
+    // Save Task After Edit 
     const saveTask = async () => {
         const data = {
             name: categoriesName,
         }
         try {
             const response = await apiRequest.patch(`/tasks/${editTaskId}`, data)
-            getTask();
+            getAllTask();
             setIsEdit(false)
             if (response) {
                 setCategoriesName("")
@@ -126,53 +126,36 @@ const Todo = () => {
         }
 
     }
+
+    // HandleTask Complete or Incomplete
+    // Make API call to update the task status
     const handleTaskComplete = async (id, item) => {
-        const updatedStatus = !item.isCompleted; // Correct toggle of status
+        const updatedStatus = !item.isCompleted;
         const data = {
             isCompleted: updatedStatus,
         };
 
-        // Optimistically update the UI
         setSingleTask(prevTasks =>
             prevTasks.map(task =>
-                task.id === id ? { ...task, isCompleted: updatedStatus } : task
-            )
-        );
-
+                task.id === id ? { ...task, isCompleted: updatedStatus } : task));
         try {
-            // Make API call to update the task status
             const response = await apiRequest.patch(`/tasks/${id}`, data);
             if (response.status === 200) {
-                getTask();
-                getCategories() // Re-fetch tasks to sync with the server
+                getAllTask();
+                GetCategories()
             }
         } catch (err) {
             console.error(err);
         }
     };
 
-    useEffect(() => {
-        getCategories();
-    }, [])
 
+    useEffect(() => {
+        GetCategories();
+    }, [])
 
     if (!singleTask) {
         return (
-            // <div class=' shadow-lg rounded-md p-4 h-[100vh]  w-[90%] mx-auto'>
-            //     <div class='animate-pulse my-[20%] w-[60%] mx-auto  rounded-md  shadow-lg shadow-indigo-300 flex space-x-4'>
-            //         <div class='rounded-full bg-slate-200 h-10 w-10'></div>
-            //         <div class='flex-1  space-y-6 py-1'>
-            //             <div class='h-2 bg-slate-200 rounded'></div>
-            //             <div class='space-y-3'>
-            //                 <div class='grid grid-cols-3 gap-4'>
-            //                     <div class='h-2 bg-slate-200 rounded col-span-2'></div>
-            //                     <div class='h-2 bg-slate-200 rounded col-span-1'></div>
-            //                 </div>
-            //                 <div class='h-2 bg-slate-200 rounded'></div>
-            //             </div>
-            //         </div>
-            //     </div>
-            // </div>
             <span className="loading loading-spinner loading-lg"></span>
         )
     }
@@ -180,13 +163,6 @@ const Todo = () => {
     return (
 
         <div div className='font-serif' >
-            <div className="relative">
-                {loader && (
-                    <div className="fixed inset-0 flex items-center justify-center  z-50">
-                        <img className="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/199956/loading-loader.svg" alt="Loading icon" />
-                    </div>
-                )}
-            </div>
 
             <div className='mx-auto bg-gray-900 h-[400vh]  ' >
                 <div className=' bg-black  mx-auto h-[200px] w-[100%] rounded-md'>
@@ -209,7 +185,7 @@ const Todo = () => {
                                     Save <img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
                                 </button>
                                 :
-                                <button onClick={addTask} className=' text-sm sm:text-[20px] flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
+                                <button onClick={AddNewTask} className=' text-sm sm:text-[20px] flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
                                     Create <img src={add} className='w-4 h-4 pr-1 mt-1 ' alt="" />
                                 </button>
                         }
@@ -318,7 +294,7 @@ const Todo = () => {
                             </div>
 
                             <div class="flex flex-col space-y-2">
-                                <button onClick={deteltetask} type="button"
+                                <button onClick={DeleteTask} type="button"
                                     class="px-4 py-2 rounded-lg text-white text-sm tracking-wide bg-red-800 hover:bg-red-600 active:bg-red-500">Delete</button>
                                 <button onClick={handleOpenModal} type="button"
                                     class="px-4 py-2 rounded-lg font-bold text-white text-sm tracking-wide bg-gray-400 hover:bg-indigo-700 active:bg-gray-200">Cancel</button>

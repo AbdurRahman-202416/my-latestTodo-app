@@ -5,7 +5,7 @@ import { createBrowserRouter, Route, RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import apiRequest from './Axios';
-
+export const loaderContext = createContext();
 function App() {
   const [loader, setLoader] = useState(false);
   const router = createBrowserRouter([
@@ -14,20 +14,27 @@ function App() {
     { path: '*', element: <h1>404 No page found</h1> },
   ]);
 
-  const loaderContext = createContext();
+
 
 
   apiRequest.interceptors.request.use((req) => {
-
+    setLoader(true)
     return req;
   })
   apiRequest.interceptors.response.use((res) => {
-
+    setLoader(false)
     return res;
   })
 
   return (
     <>
+      <div className="relative">
+        {loader && (
+          <div className="fixed inset-0 flex items-center justify-center  z-50">
+            <img className="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/199956/loading-loader.svg" alt="Loading icon" />
+          </div>
+        )}
+      </div>
       <loaderContext.Provider value={{ loader, setLoader }}>
         <RouterProvider router={router} />
         <ToastContainer />
