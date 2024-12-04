@@ -124,6 +124,10 @@ const Todo = () => {
             if (response) {
                 setCategoriesName("")
                 notifySuccess("Task Save");
+                window.scrollTo({
+                    top: 600,
+                    behavior: 'smooth'
+                });
             }
         } catch (error) {
             console.log(error)
@@ -179,7 +183,7 @@ const Todo = () => {
                         {
                             categories.filter((item) => item.id === Number(id)).map((item) => {
                                 return (
-                                    <span>{item.name}</span>
+                                    <span key={item.id}>{item.name}</span>
                                 )
                             })
 
@@ -206,11 +210,11 @@ const Todo = () => {
                         />
                         {
                             isEdit ?
-                                <button onClick={saveTask} onKeyDown={(e) => e.code == "Enter" && saveTask()} className='flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
+                                <button onClick={saveTask} onKeyDown={(e) => e.code == "Enter" && saveTask()} className='flex gap-3 rounded-lg text-white bg-indigo-400  hover:bg-indigo-700 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
                                     Save <img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
                                 </button>
                                 :
-                                <button onClick={AddNewTask} onKeyDown={(e) => e.code == "Enter" && AddNewTask()} className=' text-sm sm:text-[20px] flex gap-3 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
+                                <button onClick={AddNewTask} onKeyDown={(e) => e.code == "Enter" && AddNewTask()} className=' text-sm sm:text-[20px] flex gap-3 rounded-lg text-white bg-indigo-400  hover:bg-indigo-700 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>
                                     Create <img src={add} className='w-4 h-4 pr-1 mt-1 ' alt="" />
                                 </button>
                         }
@@ -260,8 +264,8 @@ const Todo = () => {
                                             />
                                             <label
                                                 htmlFor={`checkbox-${item.id}`}
-                                                className="w-5 sm:w-8 h-5 sm:h-7 rounded-[50%] border-2 border-indigo-400 flex items-center justify-center cursor-pointer 
-                                            peer-checked:bg-[url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEfXQDBSSyL5N1cHyVop_8rsPrCfsbc-FqZA&s')] peer-checked:bg-center peer-checked:bg-cover peer-checked:bg-no-repeat"
+                                                className="w-5 sm:w-10 h-5 sm:h-7 rounded-[50%] border-2 border-indigo-400 flex items-center justify-center cursor-pointer 
+                                            peer-checked:bg-[url('https://www.pngplay.com/wp-content/uploads/12/Check-Mark-Tick-PNG-HD-Free-File-Download.png')] peer-checked:bg-center peer-checked:bg-cover peer-checked:bg-no-repeat"
                                             >
                                             </label>
                                         </div>
@@ -278,17 +282,17 @@ const Todo = () => {
                                         >
                                             <img
                                                 src={Edit}
-                                                className=" sm:w-15 w-8 mx-auto rounded-full h-7 sm:h-10"
+                                                className=" sm:w-16 w-8 mx-auto rounded-full h-7 sm:h-10"
                                                 alt="Delete"
                                             />
                                         </button>
                                         <button
                                             onClick={() => handleOpenModal(item.id)}
-                                            className="delete-btn h-7 sm:w-15 w-[10] sm:h-10 hover:bg-[#D3F1DF] rounded-md flex items-center justify-center text-gray-400 "
+                                            className="delete-btn h-7 sm:w-12 w-[10] sm:h-12 hover:bg-red-500 rounded-md flex items-center justify-center text-gray-400 "
                                         >
                                             <img
-                                                src={deleteImg}
-                                                className=" sm:w-8 w-6 h-5 mx-1 sm:h-8"
+                                                src="https://png.pngtree.com/png-vector/20190420/ourmid/pngtree-delete-vector-icon-png-image_963444.jpg"
+                                                className=" sm:w-8 rounded-full w-6 h-5 mx-1 sm:h-8"
                                                 alt="Delete"
                                             />
                                         </button>
@@ -302,9 +306,9 @@ const Todo = () => {
             {
                 modalOpen && (
                     <div
-                        class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
-                        <div class="w-full max-w-md my-5 bg-gray-100 shadow-lg rounded-lg p-6 relative">
-                            <div class="my-5 text-center">
+                        className="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
+                        <div className="w-full max-w-md my-5 bg-gray-100 shadow-lg rounded-lg p-6 relative">
+                            <div className="my-5 text-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-14 fill-red-500 inline" viewBox="0 0 24 24">
                                     <path
                                         d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -312,15 +316,15 @@ const Todo = () => {
                                     <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
                                         data-original="#000000" />
                                 </svg>
-                                <h4 class="text-gray-800 text-md font-semibold mt-2  tracking-tight">Are you sure you want to delete this Task?</h4>
-                                <p class="text-sm text-gray-600 mt-4 w-[90%] mx-4 leading-5 tracking-tighter text-justify">This action cannot be undone, and the task will be permanently removed.</p>
+                                <h4 className="text-gray-800 text-md font-semibold mt-2  tracking-tight">Are you sure you want to delete this Task?</h4>
+                                <p className="text-sm text-gray-600 mt-4 w-[90%] mx-4 leading-5 tracking-tighter text-justify">This action cannot be undone, and the task will be permanently removed.</p>
                             </div>
 
-                            <div class="flex flex-col space-y-2">
+                            <div className="flex flex-col space-y-2">
                                 <button onClick={DeleteTask} type="button"
-                                    class="px-4 py-2 rounded-lg text-white text-sm tracking-wide bg-red-800 hover:bg-red-600 active:bg-red-500">Delete</button>
+                                    className="px-4 py-2 rounded-lg text-white text-sm tracking-wide bg-red-800 hover:bg-red-600 active:bg-red-500">Delete</button>
                                 <button onClick={handleOpenModal} type="button"
-                                    class="px-4 py-2 rounded-lg font-bold text-white text-sm tracking-wide bg-gray-400 hover:bg-indigo-700 active:bg-gray-200">Cancel</button>
+                                    className="px-4 py-2 rounded-lg font-bold text-white text-sm tracking-wide bg-gray-400 hover:bg-indigo-700 active:bg-gray-200">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -331,4 +335,4 @@ const Todo = () => {
     )
 }
 
-export default Todo
+export default Todo;

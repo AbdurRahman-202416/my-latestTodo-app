@@ -22,6 +22,7 @@ function App() {
   apiRequest.interceptors.response.use(
     (res) => {
       setLoader(false);
+
       return res;
     },
     (error) => {
@@ -30,6 +31,7 @@ function App() {
     }
   );
   return (
+    
     <>
       <div className="relative">
         {loader && (

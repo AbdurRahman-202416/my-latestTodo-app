@@ -10,12 +10,11 @@ const apiRequest = axios.create({
 });
 
 apiRequest.interceptors.request.use((req) => {
-  console.log(req.baseURL);
-
+  // console.log(req)
   return req;
 });
 apiRequest.interceptors.response.use((res) => {
-  console.log(res);
+  // console.log(res);
   return res;
 });
 

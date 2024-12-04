@@ -35,7 +35,7 @@ const HomePage = () => {
             });
             if (response) {
             }
-            console.log(data);
+            
         } catch (error) {
             console.log(error)
 
@@ -117,7 +117,6 @@ const HomePage = () => {
         }
         try {
             const response = await apiRequest.patch(`/categories/${editTaskId}`, data);
-
             getCategories()
             if (response.status == 200) {
                 setIsEdit(false)
@@ -134,24 +133,24 @@ const HomePage = () => {
 
     if (!categories) {
         return (
-            <div class=' shadow-lg rounded-md p-4 h-[200vh]  w-[90%] mx-auto'>
-                <div class='animate-pulse my-[20%] w-[60%] mx-auto  rounded-md  shadow-lg shadow-indigo-300 flex space-x-4'>
-                    <div class='rounded-full bg-slate-200 h-10 w-10'></div>
-                    <div class='flex-1  space-y-6 py-1'>
-                        <div class='h-2 bg-slate-200 rounded'></div>
-                        <div class='space-y-3'>
-                            <div class='grid grid-cols-3 gap-4'>
-                                <div class='h-2 bg-slate-200 rounded col-span-2'></div>
-                                <div class='h-2 bg-slate-200 rounded col-span-1'></div>
+            <div className=' shadow-lg rounded-md p-4 h-[200vh]  w-[90%] mx-auto'>
+                <div className='animate-pulse my-[20%] w-[60%] mx-auto  rounded-md  shadow-lg shadow-indigo-300 flex space-x-4'>
+                    <div className='rounded-full bg-slate-200 h-10 w-10'></div>
+                    <div className='flex-1  space-y-6 py-1'>
+                        <div className='h-2 bg-slate-200 rounded'></div>
+                        <div className='space-y-3'>
+                            <div className='grid grid-cols-3 gap-4'>
+                                <div className='h-2 bg-slate-200 rounded col-span-2'></div>
+                                <div className='h-2 bg-slate-200 rounded col-span-1'></div>
                             </div>
-                            <div class='h-2 bg-slate-200 rounded'></div>
+                            <div className='h-2 bg-slate-200 rounded'></div>
                         </div>
                     </div>
                 </div>
             </div>
         )
     }
-  
+
     return (
         <div>
             <div className='mx-auto z-[1000] font-serif bg-gray-800 h-[200vh]  ' >
@@ -180,16 +179,15 @@ const HomePage = () => {
                 </div>
 
 
-                <div className='mx-auto'>
+                <div className='mx-auto py-1 sm:py'>
                     {
                         categories.map((item) => {
                             return (
 
-                                <div key={Math.random()} className="h-auto group text-[18px]  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-2 sm:mx-20 px-4 items-center my-16 flex">
+                                <div key={Math.random()} className="h-auto group text-[18px]  shadow-md shadow-indigo-900  font-bold sm:text-3xl justify-between mx-2 sm:mx-20 px-4 items-center my-16 flex">
                                     <div className="justify-around rounded-md items-center mx-0 sm:mx-6 gap-2 flex">
                                         {/* <span className='text-white'>{item.id}</span> */}
                                         <Link to={`/todo/${item.id}`}>
-
                                             <div className="text-[#4ea8de] py-3">{item.name}</div>
                                         </Link>
 
@@ -201,7 +199,7 @@ const HomePage = () => {
                                             <img className='sm:w-12 w-8 rounded-lg h-8 sm:h-12' src={Edit} alt="" />
                                         </button>
                                         <button onClick={() => handleOpenModal(item.id)} className='block sm:hidden  hover:bg-[#D3F1DF] p-1 rounded-lg group-hover:block'>
-                                            <img className=' w-5 sm:w-12 rounded-lg h-6 sm:h-10 ' src={deleteImg} alt="" />
+                                            <img className=' w-5 sm:w-10 rounded-lg h-6 sm:h-8 ' src={deleteImg} alt="" />
                                         </button>
                                     </div>
                                     <div className="justify-start text-[18px] sm:text-3xl items-center gap-1 flex">
