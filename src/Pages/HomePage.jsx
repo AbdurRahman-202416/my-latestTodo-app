@@ -35,7 +35,7 @@ const HomePage = () => {
             });
             if (response) {
             }
-            
+
         } catch (error) {
             console.log(error)
 
@@ -191,21 +191,25 @@ const HomePage = () => {
                                             <div className="text-[#4ea8de] py-3">{item.name}</div>
                                         </Link>
 
-                                        <div className="px-1 sm:px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-1 inline-flex">
+                                        <div className="px-1 sm:px-2  bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-1 inline-flex">
                                             <div className="text-[#d9d9d9] ">{item.tasks.length}</div>
                                         </div>
 
                                         <button onClick={() => EditCategories(item.id, item)} className=' block sm:hidden hover:bg-[#D3F1DF]  rounded-md p-1 group-hover:block'>
                                             <img className='sm:w-12 w-8 rounded-lg h-8 sm:h-12' src={Edit} alt="" />
                                         </button>
-                                        <button onClick={() => handleOpenModal(item.id)} className='block sm:hidden  hover:bg-[#D3F1DF] p-1 rounded-lg group-hover:block'>
-                                            <img className=' w-5 sm:w-10 rounded-lg h-6 sm:h-8 ' src={deleteImg} alt="" />
+                                        <button onClick={() => handleOpenModal(item.id)} className='block sm:hidden  hover:bg-red-500  flex items-centers p-1 rounded-lg group-hover:block'>
+                                            <img
+                                                src="https://png.pngtree.com/png-vector/20190420/ourmid/pngtree-delete-vector-icon-png-image_963444.jpg"
+                                                className=" sm:w-10 rounded-full w-6 h-8 mx-1 sm:h-11"
+                                                alt="Delete"
+                                            />
                                         </button>
                                     </div>
                                     <div className="justify-start text-[18px] sm:text-3xl items-center gap-1 flex">
                                         <div className="text-[#8284fa] hidden sm:block "> Completed</div>
                                         <img className='block sm:hidden w-8 h-8 rounded-xl' src={done} alt="" />
-                                        <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
+                                        <div className="px-2 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
                                             <div className="text-[#d9d9d9]">
                                                 {item.tasks.filter(task => task.isCompleted).length}
                                             </div>

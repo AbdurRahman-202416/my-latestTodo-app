@@ -6,14 +6,12 @@ import deleteImg from "../assets/img/delete.png"
 import roket from "../assets/img/rocket.png"
 import Edit from "../assets/img/edit.png"
 import add from "../assets/img/plus.png"
+import EamptyTask from "../assets/img/Clipboard.png"
 import { notifyError, notifySuccess } from '../Component/Toaster';
 const Todo = () => {
 
     //useState Hook
     const [categories, setCategories] = useState([]);
-    const [loader, setLoader] = useState(false);
-
-
     //Get All categories
     const GetCategories = async () => {
         try {
@@ -43,7 +41,7 @@ const Todo = () => {
             });
         } catch (err) {
             console.log(err)
-            setLoader(false)
+
         }
     }
 
@@ -159,16 +157,14 @@ const Todo = () => {
     };
 
 
+ 
     useEffect(() => {
         GetCategories();
+        
     }, [])
-
-    if (!singleTask) {
-        return (
-            <span className="loading loading-spinner loading-lg"></span>
-        )
-    }
-
+  const NoData= ()=>{
+    return singleTask?.length==0
+  }
     return (
 
         <div div className='font-serif' >
@@ -220,40 +216,42 @@ const Todo = () => {
                         }
                     </div>
                 </div>
-
                 <div>
-                    <div>
-                        {categories?.length > 0 &&
-                            categories
-                                .filter((item) => item.id === Number(id))
-                                .map((item) => (
-                                    <div key={item.id}>
-                                        <div key={Math.random()} className="h-auto group text-sm  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-8 my-16 flex">
-                                            <div className="justify-around items-center mx-0 sm:mx-6 gap-2 flex">
-                                                <div className="text-[#4ea8de]">Total Task</div>
-                                                <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
-                                                    <div className="text-[#d9d9d9] ">{item.tasks.length}</div>
-                                                </div>
+
+                    {categories?.length > 0 &&
+                        categories
+                            .filter((item) => item.id === Number(id))
+                            .map((item) => (
+                                <div key={item.id}>
+                                    <div key={Math.random()} className="h-auto group text-sm  shadow-sm shadow-gray-700  font-bold sm:text-3xl justify-between mx-8 my-16 flex">
+                                        <div className="justify-around items-center mx-0 sm:mx-6 gap-2 flex">
+                                            <div className="text-[#4ea8de]">Total Task</div>
+                                            <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
+                                                <div className="text-[#d9d9d9] ">{item.tasks.length}</div>
                                             </div>
-                                            <div className="justify-start items-center gap-2 flex">
-                                                <div className="text-[#8284fa] "> Completed </div>
-                                                <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
-                                                    <div className="text-[#d9d9d9]">
-                                                        {item.tasks.filter(task => task.isCompleted).length}
-                                                    </div>
+                                        </div>
+                                        <div className="justify-start items-center gap-2 flex">
+                                            <div className="text-[#8284fa] "> Completed </div>
+                                            <div className="px-2 py-0.5 bg-[#333333] rounded-[999px] flex-col justify-center items-center gap-2.5 inline-flex">
+                                                <div className="text-[#d9d9d9]">
+                                                    {item.tasks.filter(task => task.isCompleted).length}
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>))}
-                    </div>
+                                    </div>
+                                </div>))}
+
                 </div>
 
                 <div className='mx-auto'>
                     {
-                        singleTask.map((item) => {
+                       NoData() ? <div className=" w-[90%] h-[200px] mx-auto text-sm shadow-lg font-bold   py-2">
+                        <p className=' text-gray-700 text-sm sm:text-2xl  my-1 text-center'>This category has no tasks</p>
+                            <img src={EamptyTask} className="sm:w-[20%]  sm:h-[30vh] h-[100px]  mx-auto " alt="Task Empty" />
+                        </div> : singleTask?.map((item) => {
                             return (
                                 <div key={item.id} className="h-[19px] text-sm gap-20 font-bold sm:text-4xl justify-between py-2 my-7 sm:my-20 flex">
-                                    <div className=" group task h-auto sm:h-[72px] p-4 w-[95%] bg-neutral-800 rounded-lg mx-auto shadow border border-[#333333] flex justify-between items-center gap-0">
+                                    <div className=" group task h-auto sm:h-[72px] p-4 w-[95%] rounded-lg mx-auto shadow border border-[#333333] flex justify-between items-center gap-0">
                                         <div className="relative w-7 mx-3 flex justify-center items-center">
                                             <input
                                                 onChange={(e) => handleTaskComplete(item.id, item)}

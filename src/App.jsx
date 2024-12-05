@@ -40,7 +40,7 @@ function App() {
           </div>
         )}
       </div>
-      <loaderContext.Provider value={{ loader, setLoader }}>
+      <loaderContext.Provider value={{ loader }}>
         <RouterProvider router={router} />
         <ToastContainer />
       </loaderContext.Provider >
