@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import apiRequest from '../Axios';
 import { data, Link } from 'react-router-dom';
-import Modal from '../Component/Modal';
+
 import { notify, notifyError, notifySuccess } from '../Component/Toaster';
 import { ToastContainer } from 'react-toastify';
 import deleteImg from "../assets/img/delete.png"
@@ -50,7 +50,7 @@ const HomePage = () => {
     //categories Add
     const addCategories = async () => {
         if (newCategories.length == 0) {
-            notifyError("Please input Categories name first");
+            notifyError("Please input Categories Name,Than try again");
         }
         let data = {
             name: newCategories,
@@ -129,21 +129,34 @@ const HomePage = () => {
         }
 
     }
+    const [isDisable, setIsDisiable] = useState(true)
+    const handleButtonDisable = () => {
+        if (newCategories.length == 0) {
+            setIsDisiable(true);
+        }
+        else {
+            setIsDisiable(false)
+        }
+    }
+    console.log(isDisable)
+    useEffect(() => {
+        handleButtonDisable();
+    }, [newCategories]);
 
 
     if (!categories) {
         return (
             <div className=' shadow-lg rounded-md p-4 h-[200vh]  w-[90%] mx-auto'>
-                <div className='animate-pulse my-[20%] w-[60%] mx-auto  rounded-md  shadow-lg shadow-indigo-300 flex space-x-4'>
-                    <div className='rounded-full bg-slate-200 h-10 w-10'></div>
+                <div className='animate-pulse my-[20%] w-[60%] mx-auto  rounded-md  flex space-x-4'>
+                    <div className='rounded-full h-10 w-10'></div>
                     <div className='flex-1  space-y-6 py-1'>
-                        <div className='h-2 bg-slate-200 rounded'></div>
+                        <div className='h-2 rounded'></div>
                         <div className='space-y-3'>
                             <div className='grid grid-cols-3 gap-4'>
-                                <div className='h-2 bg-slate-200 rounded col-span-2'></div>
-                                <div className='h-2 bg-slate-200 rounded col-span-1'></div>
+                                <div className='h-2 rounded col-span-2'></div>
+                                <div className='h-2 rounded col-span-1'></div>
                             </div>
-                            <div className='h-2 bg-slate-200 rounded'></div>
+                            <div className='h-2'></div>
                         </div>
                     </div>
                 </div>
@@ -169,11 +182,12 @@ const HomePage = () => {
                                 }
                             }
                         }
-                        } onChange={(e) => setNewCategories(e.target.value)} value={newCategories}
+                        }
+                            onChange={(e) => setNewCategories(e.target.value)} value={newCategories}
                             placeholder='Add a new Categories' className='bg-gray-700 w-full h-[40px] sm:h-[54px] shadow-md shadow-gray-600 px-4 rounded-lg outline-none ring-2
                      active:ring-indigo-500  text-white  text-[16px]' />
-                        {isEdit ? <button onClick={saveEditedCategories} className='flex gap-2 rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Save<img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
-                        </button> : <button onClick={addCategories} className='flex gap-2  rounded-lg text-white bg-indigo-500 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Create<img src={add} className='w-4 h-4  mt-1 ' alt="" /></button>
+                        {isEdit ? <button onClick={saveEditedCategories} className='flex gap-2 rounded-lg text-white  bg-indigo-500  hover:bg-indigo-700 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Save<img src={add} className='w-4 h-4 p1 mt-2 ' alt="" />
+                        </button> : <button disabled={isDisable} onClick={addCategories} className='flex gap-2  rounded-lg text-white bg-indigo-500 hover:bg-indigo-700 justify-center items-center h-[44px] sm:h-[54px] w-[120px]'>Create<img src={add} className='w-4 h-4  mt-1 ' alt="" /></button>
                         }
                     </div>
                 </div>
@@ -181,7 +195,7 @@ const HomePage = () => {
 
                 <div className='mx-auto py-1 sm:py'>
                     {
-                        categories.map((item) => {
+                        categories?.map((item) => {
                             return (
 
                                 <div key={Math.random()} className="h-auto group text-[18px]  shadow-md shadow-indigo-900  font-bold sm:text-3xl justify-between mx-2 sm:mx-20 px-4 items-center my-16 flex">
@@ -196,12 +210,12 @@ const HomePage = () => {
                                         </div>
 
                                         <button onClick={() => EditCategories(item.id, item)} className=' block sm:hidden hover:bg-[#D3F1DF]  rounded-md p-1 group-hover:block'>
-                                            <img className='sm:w-12 w-8 rounded-lg h-8 sm:h-12' src={Edit} alt="" />
+                                            <img className='sm:w-12 w-8 rounded-lg p-[0.10rem] h-8 sm:h-10' src={Edit} alt="" />
                                         </button>
                                         <button onClick={() => handleOpenModal(item.id)} className='block sm:hidden  hover:bg-red-500  flex items-centers p-1 rounded-lg group-hover:block'>
                                             <img
                                                 src="https://png.pngtree.com/png-vector/20190420/ourmid/pngtree-delete-vector-icon-png-image_963444.jpg"
-                                                className=" sm:w-10 rounded-full w-6 h-8 mx-1 sm:h-11"
+                                                className=" sm:w-10 rounded-full w-6 h-8 mx-1 sm:h-10 p-1"
                                                 alt="Delete"
                                             />
                                         </button>
