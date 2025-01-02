@@ -46,11 +46,6 @@ const HomePage = () => {
         getCategories();
     }, []);
 
-//api-ping.
-setInterval(() => {
-    getCategories();
-  }, 1000*5); 
-
 
     //categories Add
     const addCategories = async () => {
